@@ -1,6 +1,8 @@
 use lib;
+use biiot_prototype::Biiot;
 
 
 fn main() {
-    println!("Hello, world!");
+    Biiot::new();
+    println!("");
 }
