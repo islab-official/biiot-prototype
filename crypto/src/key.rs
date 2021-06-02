@@ -18,7 +18,7 @@ impl Sk {
     }
 
     pub fn random() -> Self {
-        let rbytes = rand::thread_rng().gen()::<[u8;32>();
+        let rbytes = rand::thread_rng().gen::<[u8;32]>();
         return Sk::new(&rbytes);
     }
 
@@ -27,20 +27,20 @@ impl Sk {
         let sk = SecretKey::from_slice(self.value.as_ref())
             .expect(WrongPkSizeError);
         let public_key = PublicKey::from_secret_key(&secp, &sk);
-        return Pk::from(public_key.serialize());
+        return Pk::from(public_key.serialize_uncompressed());
     }
 }
 
 impl AsRef<[u8]> for Sk {
     fn as_ref(&self) -> &[u8] {
-        self.value.as_ref();
+        self.value.as_ref()
     }
 }
 
 
 /// Public-Key
 pub struct Pk {
-    value: [u8; 33]
+    value: [u8; 65]
 }
 
 impl Pk {
@@ -48,11 +48,20 @@ impl Pk {
         PublicKey::from_slice(&self.value.as_ref()).unwrap()
     }
 
-    pub fn from(value: [u8;33]) -> Self { Pk { value } }
+    pub fn from(value: [u8;65]) -> Self { Pk { value } }
 
     pub fn from_sk(sk: Sk) -> Self { sk.pubkey() }
 
     pub fn to_vec(&self) -> Vec<u8> { self.value.to_vec() }
+
+    pub fn address(&self) -> [u8;20] {
+        let k = crate::hash::keccak256(self.value.as_ref());
+        let mut raw_address = [0u8;20];
+        for index in 12..32 {
+            raw_address[index] = k[index];
+        }
+        return raw_address;
+    }
 }
 
 impl AsRef<[u8]> for Pk {

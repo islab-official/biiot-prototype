@@ -1,6 +1,3 @@
-mod account;
-
-use crate::test_object::TestObject;
 
 pub trait Table: Default + Sized {
     fn get_table_name(&self) -> String;
@@ -8,7 +5,13 @@ pub trait Table: Default + Sized {
     fn get_drop_table_query(&self) -> String;
     fn get_select_query(&self, where_type: &str) -> String;
     fn get_insert_query(&self) -> String;
+    fn get_update_query(&self) -> String;
     fn get_delete_query(&self, where_type: &str) -> String;
+    fn make_statement(&self, query: &str) -> rusqlite::Statement;
+}
+
+pub trait Container {
+    fn initialize(&self);
 }
 
 pub struct TableContainer {
@@ -26,9 +29,9 @@ impl TableContainer {
         return cont;
     }
 
-    pub fn get_table(&self) -> &dyn std::any::Any {
-        let a = self.table.get(0).unwrap()
-            .downcast_ref::<TestObject>().unwrap();
-        return a;
-    }
+    // pub fn get_table(&self) -> &dyn std::any::Any {
+    //     let a = self.table.get(0).unwrap()
+    //         .downcast_ref::<TestObject>().unwrap();
+    //     return a;
+    // }
 }

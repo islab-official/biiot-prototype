@@ -7,10 +7,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ethereum-types = "0.10.0"
+ethereum-types = { version = "0.10.0", features = ["default", "num-traits", "std"]}
 rlp = "0.5.0"
 hex = "0.4.3"
 rusqlite = { version = "0.25.1", features = ["bundled"]}
 serde_json = "1.0.64"
 serde = { version = "1.0", default-features = false }
+common = { path = "../common" }
 crypto = { path = "../crypto" }

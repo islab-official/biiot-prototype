@@ -31,7 +31,7 @@ pub fn recover_from_sig(rec_id: i32, comp_sig: [u8; 64], hmsg: &[u8; 32]) -> Pk 
         RecoverableSignature::from_compact(&comp_sig, id)
             .unwrap();
     let public_key = Secp256k1::new().recover(&msg, &signature).unwrap();
-    let pk = Pk::from(public_key.serialize());
+    let pk = Pk::from(public_key.serialize_uncompressed());
 
     return pk;
 }
@@ -40,11 +40,11 @@ pub fn recover_from_vrs(hmsg: &[u8; 32], v: i32, r: [u8; 32], s: [u8; 32]) -> Pk
     let id = RecoveryId::from_i32(v).unwrap();
     let msg = Message::from_slice(hmsg).unwrap();
     let mut compact_signature = [0u8; 64];
-    let mut cnt = 0;
+    // let mut cnt = 0;
     for idx in 0..32 {
         compact_signature[idx] = r[idx];
         compact_signature[32 + idx] = s[idx];
-        cnt += 1;
+        // cnt += 1;
     }
     let signature =
         RecoverableSignature::from_compact(&compact_signature, id)
@@ -52,6 +52,6 @@ pub fn recover_from_vrs(hmsg: &[u8; 32], v: i32, r: [u8; 32], s: [u8; 32]) -> Pk
     let public_key =
         Secp256k1::new().recover(&msg, &signature)
             .unwrap();
-    let pk = Pk::from(public_key.serialize());
+    let pk = Pk::from(public_key.serialize_uncompressed());
     return pk;
 }
