@@ -1,0 +1,14 @@
+[package]
+name = "vm"
+version = "0.1.0"
+authors = ["elhongsh <elhongsh@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+hex = "0.4.3"
+ethereum-types = "0.10.0"
+common = { path = "../common" }
+ledger = { path = "../ledger" }
+#trie-base-ledger = { path = "../trie-base-ledger" }

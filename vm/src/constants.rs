@@ -1,0 +1,1 @@
+pub const StackLimit: i16 = 1024;
